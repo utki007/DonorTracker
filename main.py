@@ -1,43 +1,29 @@
 # importing the required libraries
+# importing the required libraries
 import discord
 from discord.ext import commands
 import random
 import time
+import os
+import pymongo
+import dns
+import pandas as pd
+import numpy as np
 
 description = '''This is what I have been programmed to do'''
-
-intents = discord.Intents.default()
-intents.members = False
-
-bot = commands.Bot(command_prefix='?', description=description, intents=intents)
+bot = commands.Bot(command_prefix='?', description=description,)
 
 @bot.event
 async def on_ready():
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)
-    print('---main.py---')
-
-@bot.command()
-async def add(ctx, left: int, right: int):
-    """Adds two numbers together."""
-    await ctx.send(left + right)
+    print('------')
 
 @bot.command(aliases=['pong'],description='ping the bot mofo')
 async def ping(ctx):
 	"""Bot Is dead"""
 	await ctx.send(f'Pong! {round(bot.latency*1000)}ms')
 
-@bot.command(aliases=['clear'])
-async def purge(ctx,amount=5):
-	await ctx.channel.purge(limit=amount+1)
-
-@bot.command()
-async def say(ctx,text: str):
-	await ctx.channel.purge(limit=1)
-	await ctx.send(text)
-
-
-
-
-bot.run('ODEwMDQxMjYzNDUyODQ4MTc5.YCd3tw.gJALdEngQ9WLwzNbHGdhADiFuWU')
+bot.run(os.environ.get['BOT_TOKEN'])
+# bot.run('ODEwMDQxMjYzNDUyODQ4MTc5.YCd3tw.gJALdEngQ9WLwzNbHGdhADiFuWU')
