@@ -25,13 +25,23 @@ class donationTracker(commands.Cog):
         # Send a nice message
         print(f'donobank loaded')
 
+
+    # add a donator if he doesn't exist
+    async def create_donor(self,user):
+        dict = {}
+        dict["_id"] = user.id
+        dict["name"] = user.name[0:9]
+        dict["bal"] = 0
+        self.mycol.insert_one(dict)
+
+
     @commands.command()
     async def adono(self,ctx, member: discord.Member, amount: int):
         
         self.authorized = False
-        al = ['562738920031256576','779311369420931133']
+        authorizedUsers = ['562738920031256576','779311369420931133']
 
-        for i in al:
+        for i in authorizedUsers:
             if ctx.author.id == int(i):
                 self.authorized =True
                 break
@@ -86,19 +96,122 @@ class donationTracker(commands.Cog):
             await channel.send(embed=logg)
         
         else:
+            await ctx.message.add_reaction("<a:ban:823998531827400795>")
             await ctx.send(f"⚠ {ctx.author.mention}, you are __**unauthorized**__ to use this command ⚠") 
 
+
+
+    @commands.command()
+    async def rdono(self,ctx, member: discord.Member, amount: int):
+        
+        self.authorized = False
+        authorizedUsers = ['562738920031256576','779311369420931133']
+
+        for i in authorizedUsers:
+            if ctx.author.id == int(i):
+                self.authorized =True
+                break
+
+        if ctx.author.guild_permissions.administrator or self.authorized:
+            myquery = {"_id": member.id}
+            info = self.mycol.find(myquery)
+            flag = 0
+            dict = {}
+            for x in info:
+                dict = x
+                flag = 1
+
+            if flag == 0:
+                await ctx.send("⚠ {ctx.author.mention}, Donor Doesn't Exist. How tf are you removing donation? Let me report you to my boss!! ⚠")
+            else:
+                if dict["bal"]-amount < 0:
+                    await ctx.message.add_reaction("<a:invalid:823999689879191552>")
+                    await ctx.send("⚠ Try Again!! You can't remove more than the donated value. ⚠")
+                else:
+                    newvalues = {"$set": {"bal": dict["bal"]-amount}}
+                    dict["bal"] = dict["bal"]-amount
+
+            # updating the value
+            self.mycol.update_one(myquery, newvalues)
+            await ctx.message.add_reaction("<a:tick:823850808264097832>")
+
+            # showing donor balance
+            self.bal = "bal"
+            display = discord.Embed(
+                title=f"__{member.name} Donator Bank__",
+                description=f"{member.mention} has removed {amount:,} to their donor balance. thanks for your dono.  \n\n"
+                            f"{member.mention} Total Donation **{dict[self.bal]:,}** \n",
+                colour=member.colour
+            )
+
+            display.set_footer(
+                text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
+
+            await ctx.send(embed=display)
+
+
+            # for logging
+            logg = discord.Embed(
+                title="__Gambler's Kingdom Logging Registry__",
+                description=f"{ctx.author.mention} added **{amount:,}** to {member.mention} bal [here]({ctx.message.jump_url})",
+                colour=ctx.author.colour
+            )
+
+            logg.set_footer(
+                text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
+
+            channel = self.client.get_channel(823601745002496000)
+            await channel.send(embed=logg)
+        
+        else:
+            await ctx.message.add_reaction("<a:ban:823998531827400795>")
+            await ctx.send(f"⚠ {ctx.author.mention}, you are __**unauthorized**__ to use this command ⚠") 
+    
+
+    
+    @commands.command()
+    async def topdono(self,ctx,  number=5):
+
+        myquery = self.mycol.find({}, {"_id": 1, "name": 1, "bal": 1}
+                            ).sort("bal", -1).limit(5)
+
+        list = []
+        # print the result:
+        for x in myquery:
+            dict = x
+            list.append(dict)
+            # await ctx.send(list)
+
+        # if len(list)<5:
+        #     await ctx.send("Min 5 members are needed for top dono")
+
+        member = ctx.author
+        """Get to know the top donors"""
+        id = "name"
+        bal = "bal"
+        embed = discord.Embed(
+            title="__Gambler's Kingdom Top Donators__",
+            description=f"```fix \n{'Rank' : <8}{'Name' : <12}{'Donated':>12}\n"
+            f"{'🥇' : <7}{f'{list[0][id]}' : <12}{f'{int(list[0][bal]/1000):,} K' :>12}\n"
+            f"{'🥈' : <7}{f'{list[1][id]}' : <12}{f'{int(list[1][bal]/1000):,} K' :>12}\n"
+            f"{'🥉' : <7}{f'{list[2][id]}' : <12}{f'{int(list[2][bal]/1000):,} K' :>12}\n"
+            f"{'🏅' : <7}{f'{list[3][id]}' : <12}{f'{int(list[3][bal]/1000):,} K' :>12}\n"
+            f"{'🏅' : <7}{f'{list[4][id]}' : <12}{f'{int(list[4][bal]/1000):,} K' :>12}\n```",
+            colour=member.colour
+        )
+
+        embed.add_field(
+            name="Note: ", value=f"to check your donation do ```?bal```", inline=True)
+
+        embed.set_footer(
+            text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
+        # embed.set_thumbnail(url=member.avatar_url)
+        await ctx.send(embed=embed)
 
 
 
         
 
-    async def create_donor(self,user):
-        dict = {}
-        dict["_id"] = user.id
-        dict["name"] = user.name
-        dict["bal"] = 0
-        self.mycol.insert_one(dict)
 
 def setup(client):
     client.add_cog(donationTracker(client))
