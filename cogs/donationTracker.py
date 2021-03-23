@@ -209,8 +209,111 @@ class donationTracker(commands.Cog):
         await ctx.send(embed=embed)
 
 
-
+ 
+    @commands.command()
+    async def nick(self,ctx, member: discord.Member = None, nick :str ="setNewNick"):
         
+        self.authorized = False
+        authorizedUsers = ['562738920031256576']
+
+        for i in authorizedUsers:
+            if ctx.author.id == int(i):
+                self.authorized =True
+                break
+
+        if ctx.author.guild_permissions.administrator or self.authorized:
+            myquery = {"_id": member.id}
+            info = self.mycol.find(myquery)
+            flag = 0
+            dict = {}
+            for x in info:
+                dict = x
+                flag = 1
+
+            if flag == 0:
+                await ctx.message.add_reaction("<a:invalid:823999689879191552>")
+                await ctx.send(f"⚠ {ctx.author.mention}, Donor Doesn't Exist. Can't Change nick!! ⚠")
+            else:
+                newvalues = {"$set": {"name": nick[0:9]}}
+                self.mycol.update_one(myquery, newvalues)
+                await ctx.message.add_reaction("<a:tick:823850808264097832>")
+            
+            # showing donor balance
+            self.bal = "bal"
+            display = discord.Embed(
+                title=f"__{member.name} Donator Bank__",
+                description=
+                            f"{member.mention} Total Donation **{dict[self.bal]:,}** \n",
+                colour=member.colour
+            )
+
+            display.set_footer(
+                text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
+
+            await ctx.send(embed=display)
+
+
+            # for logging
+            logg = discord.Embed(
+                title="__Gambler's Kingdom Logging Registry__",
+                description=f"{ctx.author.mention} changed  {member.mention} name to  **{nick[:9]}** [here]({ctx.message.jump_url})",
+                colour=ctx.author.colour
+            )
+
+            logg.set_footer(
+                text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
+
+            channel = self.client.get_channel(823601745002496000)
+            await channel.send(embed=logg)
+        
+        else:
+            member = ctx.author
+            myquery = {"_id": member.id}
+            info = self.mycol.find(myquery)
+            flag = 0
+            dict = {}
+            for x in info:
+                dict = x
+                flag = 1
+
+            if flag == 0:
+                await ctx.message.add_reaction("<a:invalid:823999689879191552>")
+                await ctx.send(f"⚠ {ctx.author.mention}, Donor Doesn't Exist. Can't Change nick!! ⚠")
+            else:
+                newvalues = {"$set": {"name": nick[0:9]}}
+                self.mycol.update_one(myquery, newvalues)
+                await ctx.message.add_reaction("<a:tick:823850808264097832>")
+            
+            # showing donor balance
+            self.bal = "bal"
+            display = discord.Embed(
+                title=f"__{member.name} Name Change Request__",
+                description=
+                            f"{ctx.author.mention} you have changed name to  **{nick[:9]}** ",
+                colour=member.colour
+            )
+
+            display.set_footer(
+                text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
+
+            await ctx.send(embed=display)
+
+
+            # for logging
+            logg = discord.Embed(
+                title="__Gambler's Kingdom Logging Registry__",
+                description=f"{ctx.author.mention} changed name to  **{nick[:9]}** [here]({ctx.message.jump_url})",
+                colour=ctx.author.colour
+            )
+
+            logg.set_footer(
+                text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
+
+            channel = self.client.get_channel(823601745002496000)
+            await channel.send(embed=logg)
+
+   
+       
 
 
 def setup(client):
