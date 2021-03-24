@@ -20,9 +20,9 @@ class donationTracker(commands.Cog):
         self.mydb = self.myclient['TGK']
         self.mycol = self.mydb["donorBank"]
         # for donation server
-        self.logChannel = int(824284737605861427)
+        # self.logChannel = int(824284737605861427)
         # for my server
-        # self.logChannel = int(823601745002496000)
+        self.logChannel = int(823601745002496000)
 
 
 
