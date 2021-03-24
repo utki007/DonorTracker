@@ -317,8 +317,50 @@ class donationTracker(commands.Cog):
             channel = self.client.get_channel(823601745002496000)
             await channel.send(embed=logg)
 
- 
 
+    @commands.command()
+    async def bal(self,ctx, member: discord.Member=None):
+        
+        self.authorized = False
+        authorizedUsers = ['562738920031256576']
+
+        for i in authorizedUsers:
+            if ctx.author.id == int(i):
+                self.authorized =True
+                break
+
+        if ctx.author.guild_permissions.administrator or self.authorized:
+            member = member or ctx.author
+        else:
+            member = ctx.author
+
+        myquery = {"_id": member.id}
+        info = self.mycol.find(myquery)
+        flag = 0
+        dict = {}
+        for x in info:
+            dict = x
+            flag = 1
+
+        if flag == 0:
+            await ctx.message.add_reaction("<a:invalid:823999689879191552>")
+            await ctx.send(f"⚠ {member.mention}, Please donate to check balance!! ⚠")
+        else:
+            await ctx.message.add_reaction("<a:tick:823850808264097832>")
+
+            # showing donor balance
+            self.amount = "bal"
+            display = discord.Embed(
+                title=f"__{member.name} Donator Bank__",
+                description=
+                            f"{member.mention} Total Donation **{dict[self.amount]:,}** \n",
+                colour=member.colour
+            )
+
+            display.set_footer(
+                text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
+
+            await ctx.send(embed=display)
 
 
 def setup(client):
