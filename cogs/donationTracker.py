@@ -244,9 +244,9 @@ class donationTracker(commands.Cog):
                 # showing donor balance
                 self.bal = "bal"
                 display = discord.Embed(
-                    title=f"__{member.name} Donator Bank__",
+                    title=f"__{dict['name']} Donator Bank__",
                     description=
-                            f"{member.mention} Total Donation **{dict[self.bal]:,}** \n",
+                            f"{dict['name']} name has been changed to  **{nick[:9]}** ",
                     colour=member.colour
                 )
 
@@ -317,7 +317,7 @@ class donationTracker(commands.Cog):
             channel = self.client.get_channel(823601745002496000)
             await channel.send(embed=logg)
 
-   
+ 
 
 
 
