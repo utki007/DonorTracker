@@ -193,7 +193,7 @@ class donationTracker(commands.Cog):
         bal = "bal"
         embed = discord.Embed(
             title="__Gambler's Kingdom Top Donators__",
-            description=f"```fix \n{'Rank' : <8}{'Name' : <12}{'Donated':>12}\n"
+            description=f"```{'Rank' : <8}{'Name' : <12}{'Donated':>12}\n"
             f"{'🥇' : <7}{f'{list[0][id]}' : <12}{f'{int(list[0][bal]/1000):,} K' :>12}\n"
             f"{'🥈' : <7}{f'{list[1][id]}' : <12}{f'{int(list[1][bal]/1000):,} K' :>12}\n"
             f"{'🥉' : <7}{f'{list[2][id]}' : <12}{f'{int(list[2][bal]/1000):,} K' :>12}\n"
