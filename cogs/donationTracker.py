@@ -39,7 +39,7 @@ class donationTracker(commands.Cog):
     async def adono(self,ctx, member: discord.Member, amount: int):
         
         self.authorized = False
-        authorizedUsers = ['562738920031256576','779311369420931133']
+        authorizedUsers = ['562738920031256576']
 
         for i in authorizedUsers:
             if ctx.author.id == int(i):
@@ -80,6 +80,7 @@ class donationTracker(commands.Cog):
                 text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
 
             await ctx.send(embed=display)
+            await member.send(embed=display)
 
 
             # for logging
@@ -148,6 +149,7 @@ class donationTracker(commands.Cog):
                 text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
 
             await ctx.send(embed=display)
+            await member.send(embed=display)
 
 
             # for logging
@@ -233,24 +235,25 @@ class donationTracker(commands.Cog):
             if flag == 0:
                 await ctx.message.add_reaction("<a:invalid:823999689879191552>")
                 await ctx.send(f"⚠ {ctx.author.mention}, Donor Doesn't Exist. Can't Change nick!! ⚠")
+                await member.send(f"⚠ {member.mention}, Please donate to change your nick!! ⚠")
             else:
                 newvalues = {"$set": {"name": nick[0:9]}}
                 self.mycol.update_one(myquery, newvalues)
                 await ctx.message.add_reaction("<a:tick:823850808264097832>")
             
-            # showing donor balance
-            self.bal = "bal"
-            display = discord.Embed(
-                title=f"__{member.name} Donator Bank__",
-                description=
+                # showing donor balance
+                self.bal = "bal"
+                display = discord.Embed(
+                    title=f"__{member.name} Donator Bank__",
+                    description=
                             f"{member.mention} Total Donation **{dict[self.bal]:,}** \n",
-                colour=member.colour
-            )
+                    colour=member.colour
+                )
 
-            display.set_footer(
-                text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
-
-            await ctx.send(embed=display)
+                display.set_footer(
+                    text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
+                await ctx.send(embed=display)
+                await member.send(embed=display)
 
 
             # for logging
@@ -279,6 +282,7 @@ class donationTracker(commands.Cog):
             if flag == 0:
                 await ctx.message.add_reaction("<a:invalid:823999689879191552>")
                 await ctx.send(f"⚠ {ctx.author.mention}, Donor Doesn't Exist. Can't Change nick!! ⚠")
+                await member.send(f"⚠ {member.mention}, Please donate to change your nick!! ⚠")
             else:
                 newvalues = {"$set": {"name": nick[0:9]}}
                 self.mycol.update_one(myquery, newvalues)
@@ -297,6 +301,7 @@ class donationTracker(commands.Cog):
                 text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
 
             await ctx.send(embed=display)
+            await member.send(embed=display)
 
 
             # for logging
@@ -313,7 +318,7 @@ class donationTracker(commands.Cog):
             await channel.send(embed=logg)
 
    
-       
+
 
 
 def setup(client):
