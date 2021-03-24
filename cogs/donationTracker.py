@@ -19,6 +19,13 @@ class donationTracker(commands.Cog):
             'mongodb+srv://utki009:Utkarsh2697@cluster0.5wndm.mongodb.net/TGK?retryWrites=true&w=majority')
         self.mydb = self.myclient['TGK']
         self.mycol = self.mydb["donorBank"]
+        # for donation server
+        self.logChannel = int(824284737605861427)
+        # for my server
+        # self.logChannel = int(823601745002496000)
+
+
+
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -93,7 +100,7 @@ class donationTracker(commands.Cog):
             logg.set_footer(
                 text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
-            channel = self.client.get_channel(823601745002496000)
+            channel = self.client.get_channel(self.logChannel)
             await channel.send(embed=logg)
         
         else:
@@ -162,7 +169,7 @@ class donationTracker(commands.Cog):
             logg.set_footer(
                 text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
-            channel = self.client.get_channel(823601745002496000)
+            channel = self.client.get_channel(self.logChannel)
             await channel.send(embed=logg)
         
         else:
@@ -243,10 +250,11 @@ class donationTracker(commands.Cog):
             
                 # showing donor balance
                 self.bal = "bal"
+                self.name = "name"
                 display = discord.Embed(
-                    title=f"__{dict['name']} Donator Bank__",
+                    title=f"__{dict[self.name]} Donator Bank__",
                     description=
-                            f"{dict['name']} name has been changed to  **{nick[:9]}** ",
+                            f"{dict[self.name]} name has been changed to  **{nick[:9]}** ",
                     colour=member.colour
                 )
 
@@ -266,7 +274,7 @@ class donationTracker(commands.Cog):
             logg.set_footer(
                 text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
-            channel = self.client.get_channel(823601745002496000)
+            channel = self.client.get_channel(self.logChannel)
             await channel.send(embed=logg)
         
         else:
@@ -314,7 +322,7 @@ class donationTracker(commands.Cog):
             logg.set_footer(
                 text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
-            channel = self.client.get_channel(823601745002496000)
+            channel = self.client.get_channel(self.logChannel)
             await channel.send(embed=logg)
 
 
