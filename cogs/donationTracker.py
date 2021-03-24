@@ -86,8 +86,18 @@ class donationTracker(commands.Cog):
             display.set_footer(
                 text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
 
+            dmMessage = discord.Embed(
+                title=f"__{member.name} Donator Bank__",
+                description=f"Thank you for your {amount:,} Donation. \n\n"
+                            f"Total Donation **{dict[self.bal]:,}** \n",
+                colour=member.colour
+            )
+
+            dmMessage.set_footer(
+                text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
+
             await ctx.send(embed=display)
-            await member.send(embed=display)
+            await member.send(embed=dmMessage)
 
 
             # for logging
@@ -155,8 +165,18 @@ class donationTracker(commands.Cog):
             display.set_footer(
                 text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
 
+            dmMessage = discord.Embed(
+                title=f"__{member.name} Donator Bank__",
+                description=f"{amount:,} Has been deducted from your account. \n If it was not authorized by you then do reach out to an admin. \n\n"
+                            f"Updated Donation **{dict[self.bal]:,}** \n",
+                colour=member.colour
+            )
+
+            dmMessage.set_footer(
+                text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
+
             await ctx.send(embed=display)
-            await member.send(embed=display)
+            await member.send(embed=dmMessage)
 
 
             # for logging
@@ -309,7 +329,7 @@ class donationTracker(commands.Cog):
                 text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
 
             await ctx.send(embed=display)
-            await member.send(embed=display)
+            await member.send(f"your nick has been changed to  **{nick[:9]}** [here]({ctx.message.jump_url})")
 
 
             # for logging
