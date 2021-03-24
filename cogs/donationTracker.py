@@ -18,7 +18,7 @@ class donationTracker(commands.Cog):
         self.myclient = pymongo.MongoClient(
             'mongodb+srv://utki009:Utkarsh2697@cluster0.5wndm.mongodb.net/TGK?retryWrites=true&w=majority')
         self.mydb = self.myclient['TGK']
-        # self.mycol = self.mydb["donorBank"]
+        self.mycol = self.mydb["donorBank"]
         # for donation server
         self.logChannel = int(824284737605861427)
         # for my server
