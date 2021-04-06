@@ -28,7 +28,7 @@ async def on_message(msg):
         for emoji in msg.guild.emojis:
             if emoji.name == name:
                 await msg.channel.send(str(emoji))
-                await msg.messsage.delete()
+                await msg.delete(msg)
                 break
     await client.process_commands(msg)
 
