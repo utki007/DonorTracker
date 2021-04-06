@@ -27,8 +27,8 @@ async def on_message(msg):
         name = msg.content[1:-1]
         for emoji in msg.guild.emojis:
             if emoji.name == name:
-                await msg.send(str(emoji))
-                await msg.delete()
+                await ctx.send(str(emoji))
+                await ctx.msg.delete()
                 break
     await client.process_commands(msg)
 
