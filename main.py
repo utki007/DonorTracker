@@ -44,5 +44,4 @@ async def ping(ctx):
 	"""Bot Is dead"""
 	await ctx.send(f'Pong! {round(client.latency*1000)}ms')
 
-# client.run(os.environ['BOT_TOKEN'])
-client.run('ODEwMDQxMjYzNDUyODQ4MTc5.YCd3tw.gJALdEngQ9WLwzNbHGdhADiFuWU')
+client.run(os.environ['BOT_TOKEN'])

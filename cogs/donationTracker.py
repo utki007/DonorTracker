@@ -42,7 +42,7 @@ class donationTracker(commands.Cog):
         self.mycol.insert_one(dict)
 
 
-    @commands.command()
+    @commands.command(name="adono", description="Add Donation for a member", usage="<member> <amount>",aliases=['add-donation','add-bal'])
     async def adono(self,ctx, member: discord.Member, amount: int):
         
         self.authorized = False
