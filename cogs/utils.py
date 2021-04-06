@@ -12,24 +12,6 @@ class utils(commands.Cog):
     async def on_ready(self):
         # Send a nice message
         print(f'utils loaded')
-
-
-    @commands.command(name="lock", description="Lock the given channel For mentioned Role", usage="[channel] [Role]",)
-    @commands.has_permissions(manage_messages=True)
-    async def lock(self, ctx, channel: discord.TextChannel = None, role: discord.Role = None):
-
-        channel = channel if channel else ctx.channel
-        role = role if role else ctx.guild.default_role
-
-        overwrite = channel.overwrites_for(role)
-        overwrite.send_messages = False
-
-        await ctx.message.delete()
-        await channel.set_permissions(role, overwrite=overwrite)
-
-        embed = discord.Embed(color=0x02ff06, description=f'The {channel.name} is Lock for {role.mention}')
-        await channel.send(embed=embed)
-
     
     @commands.command(name="slowmode", description="Set Slowmode In Current Channel", usage="[slowmode time 1m, 1s 1h max 6h]", aliases=['s','sm'])
     @commands.has_permissions(manage_messages=True)
@@ -52,6 +34,7 @@ class utils(commands.Cog):
 
 
         
+        # await ctx.message.delete()
         if cd > 21600:
             await ctx.send(f"Slowmode interval can't be greater than 6 hours.")
         elif cd == 0:
@@ -65,6 +48,12 @@ class utils(commands.Cog):
                 await ctx.send(f'Slowmode interval is now **{int(cd/60)} mins**.')
             else:
                 await ctx.send(f'Slowmode interval is now **{cd} secs**.')
+        
+        await ctx.message.delete()
+
+
+    @commands.command(name="lock", description="Lock the channel", usage="role",aliases=['l'])
+    async def lockk(self,ctx, member: discord.Member, amount: int):
         await ctx.message.delete()
 
 
