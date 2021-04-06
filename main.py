@@ -19,6 +19,13 @@ async def on_ready():
     print(client.user.id)
     print('------')
 
+@client.event
+    async def on_message(msg):
+        for word in ['chut']:
+            if word in msg.content:
+                await msg.delete()
+		await client.process_commands(msg)
+
 @client.command()
 @commands.has_permissions(administrator=True)
 async def load(ctx, extension):
