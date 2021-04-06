@@ -34,7 +34,7 @@ async def on_message(msg):
                 webhook = discord.utils.get(webhooks, name="utki009")
                 if webhook is None:
                     webhook = await msg.channel.create_webhook(name="utki009")
-                    await webhook.send(msg, username=msg.author.name)
+                await webhook.send(content = str(emoji), username=msg.author.name)
 
     await client.process_commands(msg)
 
