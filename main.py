@@ -21,16 +21,16 @@ async def on_ready():
     print('------')
 
 
-@client.event
-async def on_message(msg):
-    if ";" == msg.content[0] and ";" == msg.content[-1]:
-        name = msg.content[1:-1]
-        for emoji in msg.guild.emojis:
-            if emoji.name == name:
-                await client.send(str(emoji))
-                await client.delete()
-                break
-    await client.process_commands(msg)
+# @client.event
+# async def on_message(msg):
+#     if ";" == msg.content[0] and ";" == msg.content[-1]:
+#         name = msg.content[1:-1]
+#         for emoji in msg.guild.emojis:
+#             if emoji.name == name:
+#                 await msg.send(str(emoji))
+#                 await msg.delete()
+#                 break
+#     await client.process_commands(msg)
 
 
 @client.command()

@@ -12,8 +12,19 @@ class utils(commands.Cog):
     async def on_ready(self):
         # Send a nice message
         print(f'utils loaded')
-    
-    @commands.command(name="slowmode", description="Set Slowmode In Current Channel", usage="[slowmode time 1m, 1s 1h max 6h]", aliases=['s','sm'])
+
+    @commands.Cog.listener()
+    async def on_message(self,msg):
+        if ";" == msg.content[0] and ";" == msg.content[-1]:
+            name = msg.content[1:-1]
+            for emoji in msg.guild.emojis:
+                if emoji.name == name:
+                    await self.client.send(str(emoji))
+                    await self.client.delete()
+                    break
+        await self.client.process_commands(msg)
+
+    @commands.command(name="slowmode", description="Set Slowmode In Current Channel", usage="[slowmode time 1m, 1s 1h max 6h]", aliases=['s', 'sm'])
     @commands.has_permissions(manage_messages=True)
     async def slowmode(self, ctx, time: str = '0'):
 
@@ -32,8 +43,6 @@ class utils(commands.Cog):
         else:
             cd = int(time) if time else 0
 
-
-        
         # await ctx.message.delete()
         if cd > 21600:
             await ctx.send(f"Slowmode interval can't be greater than 6 hours.")
@@ -48,11 +57,10 @@ class utils(commands.Cog):
                 await ctx.send(f'Slowmode interval is now **{int(cd/60)} mins**.')
             else:
                 await ctx.send(f'Slowmode interval is now **{cd} secs**.')
-        
+
         await ctx.message.delete()
 
-
-    @commands.command(name="lock", description="Lock the channel", usage="role",aliases=['l'])
+    @commands.command(name="lock", description="Lock the channel", usage="role", aliases=['l'])
     @commands.has_permissions(manage_messages=True)
     async def lock(self, ctx, channel: discord.TextChannel = None, role: discord.Role = None):
 
@@ -65,7 +73,8 @@ class utils(commands.Cog):
         await ctx.message.delete()
         await channel.set_permissions(role, overwrite=overwrite)
 
-        embed = discord.Embed(color=0x02ff06, description=f'The {channel.name} is Lock for {role.mention}')
+        embed = discord.Embed(
+            color=0x02ff06, description=f'The {channel.name} is Lock for {role.mention}')
         await channel.send(embed=embed)
         role = discord.utils.get(ctx.guild.roles, id=820559294420221952)
         await ctx.send(f'{role.mention}')
