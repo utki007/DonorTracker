@@ -8,6 +8,7 @@ import pymongo
 import dns
 import pandas as pd
 import numpy as np
+from discord_webhook import DiscordWebhook
 
 description = '''This is what I have been programmed to do'''
 client = commands.Bot(command_prefix='?', description=description,)
@@ -25,10 +26,12 @@ async def on_ready():
 async def on_message(msg):
     if ";" == msg.content[0] and ";" == msg.content[-1]:
         name = msg.content[1:-1]
-        for emoji in msg.guild.emojis:
+		for emoji in msg.guild.emojis:
             if emoji.name == name:
                 await msg.channel.send(str(emoji))
                 await msg.delete()
+				webhook = DiscordWebhook(url = "https://discord.com/api/webhooks/828973369461440552/874AAz6IV_Cv7ohF8JQoUFFUbYnptMYcRm4zUCKQJoQ4GO-PBGNHVSvoN3AiZH6JbG4b", username = "utki009",content = msg)
+				await webhook.send(msg,username= msg.author.name)
                 break
     await client.process_commands(msg)
 
