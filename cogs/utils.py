@@ -53,8 +53,21 @@ class utils(commands.Cog):
 
 
     @commands.command(name="lock", description="Lock the channel", usage="role",aliases=['l'])
-    async def lockk(self,ctx, member: discord.Member, amount: int):
+    @commands.has_permissions(manage_messages=True)
+    async def lock(self, ctx, channel: discord.TextChannel = None, role: discord.Role = None):
+
+        channel = channel if channel else ctx.channel
+        role = role if role else ctx.guild.default_role
+
+        overwrite = channel.overwrites_for(role)
+        overwrite.send_messages = False
+
         await ctx.message.delete()
+        await channel.set_permissions(role, overwrite=overwrite)
+
+        embed = discord.Embed(color=0x02ff06, description=f'The {channel.name} is Lock for {role.mention}')
+        await channel.send(embed=embed)
+
 
 
 def setup(client):
