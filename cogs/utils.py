@@ -13,17 +13,6 @@ class utils(commands.Cog):
         # Send a nice message
         print(f'utils loaded')
 
-    @commands.Cog.listener()
-    async def on_message(self,msg):
-        if ";" == msg.content[0] and ";" == msg.content[-1]:
-            name = msg.content[1:-1]
-            for emoji in msg.guild.emojis:
-                if emoji.name == name:
-                    await self.client.send(str(emoji))
-                    await self.client.delete()
-                    break
-        await self.client.process_commands(msg)
-
     @commands.command(name="slowmode", description="Set Slowmode In Current Channel", usage="[slowmode time 1m, 1s 1h max 6h]", aliases=['s', 'sm'])
     @commands.has_permissions(manage_messages=True)
     async def slowmode(self, ctx, time: str = '0'):
