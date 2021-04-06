@@ -28,8 +28,8 @@ async def on_message(msg):
         name = msg.content[1:-1]
         for emoji in msg.guild.emojis:
             if emoji.name == name:
-                await msg.channel.send(str(emoji))
-                await msg.delete()
+                # await msg.channel.send(str(emoji))
+                # await msg.delete()
                 webhooks = await msg.channel.webhooks()
                 webhook = discord.utils.get(webhooks, name="utki009")
                 if webhook is None:
