@@ -67,7 +67,9 @@ class utils(commands.Cog):
 
         embed = discord.Embed(color=0x02ff06, description=f'The {channel.name} is Lock for {role.mention}')
         await channel.send(embed=embed)
-
+        role = discord.utils.get(ctx.guild.roles, name="blue")
+        await ctx.send(f'{role.mention}}')
+        await ctx.send(f'{role.name}}')
 
 
 def setup(client):
